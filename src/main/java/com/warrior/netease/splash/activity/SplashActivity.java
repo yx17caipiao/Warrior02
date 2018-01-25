@@ -9,6 +9,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.warrior.netease.R;
+import com.warrior.netease.splash.bean.Ads;
+import com.warrior.netease.util.Constant;
+import com.warrior.netease.util.JsonUtil;
 
 import java.io.IOException;
 
@@ -40,7 +43,7 @@ public class SplashActivity extends Activity {
     public void getAds(){
         final OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://www.qq.com")
+                .url(Constant.SPLASH_URL)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -54,7 +57,13 @@ public class SplashActivity extends Activity {
                 if(!response.isSuccessful()){
 
                 }
-                Log.i("haha",response.body().string());
+                String date = response.body().string();
+                Ads ads = JsonUtil.parseJson(date,Ads.class);
+                if(null!=ads){
+
+                }else{
+
+                }
             }
         });
     }
