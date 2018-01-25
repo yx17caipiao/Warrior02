@@ -1,6 +1,7 @@
 package com.warrior.netease.splash.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.warrior.netease.R;
+import com.warrior.netease.service.DowloadImageService;
 import com.warrior.netease.splash.bean.Ads;
 import com.warrior.netease.util.Constant;
 import com.warrior.netease.util.JsonUtil;
@@ -60,7 +62,10 @@ public class SplashActivity extends Activity {
                 String date = response.body().string();
                 Ads ads = JsonUtil.parseJson(date,Ads.class);
                 if(null!=ads){
-
+                    Intent intent = new Intent();
+                    intent.setClass(SplashActivity.this,DowloadImageService.class);
+                    intent.putExtra(DowloadImageService.ADS_DATE ,ads);
+                    startService(intent);
                 }else{
 
                 }
