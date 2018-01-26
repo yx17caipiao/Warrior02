@@ -37,7 +37,6 @@ public class DowloadImageService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         //接收到http请求的对象
         Ads ads = (Ads) intent.getSerializableExtra(ADS_DATE);
         //下载图片
@@ -52,7 +51,6 @@ public class DowloadImageService extends IntentService {
                     String catche_neme = Md5Helper.toMD5(img_url);
                     //先判断图片是否存在,如果存在不下载
                     if(!checkImageIsDownLoad(catche_neme)){
-                        Log.i("it520","downing");
                         //下载图片
                         downloadImage(img_url,catche_neme);
                     }
