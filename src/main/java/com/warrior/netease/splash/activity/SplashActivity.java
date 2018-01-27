@@ -50,6 +50,11 @@ public class SplashActivity extends Activity {
 
     }
 
+
+    public void showImage(){
+
+    }
+
     public void getAds(){
         String cache = SharePrenceUtil.getString(this,JSON_CACHE);
         if(TextUtils.isEmpty(cache)){
