@@ -2,22 +2,30 @@ package com.warrior.netease.splash.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.warrior.netease.R;
 import com.warrior.netease.service.DowloadImageService;
+import com.warrior.netease.splash.bean.Action;
 import com.warrior.netease.splash.bean.Ads;
+import com.warrior.netease.splash.bean.AdsDetail;
 import com.warrior.netease.util.Constant;
+import com.warrior.netease.util.ImageUtil;
 import com.warrior.netease.util.JsonUtil;
+import com.warrior.netease.util.Md5Helper;
 import com.warrior.netease.util.SharePrenceUtil;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,12 +55,68 @@ public class SplashActivity extends Activity {
 
         iv_ads = (ImageView)findViewById(R.id.ads);
         getAds();
+        showImage();
 
     }
 
 
     public void showImage(){
+        //读出缓存
+        String cache =  SharePrenceUtil.getString(this,JSON_CACHE);
+        if(!TextUtils.isEmpty(cache)){
+            //读出这次显示的图片的角标
+            int index = SharePrenceUtil.getInt(this,LAST_IMAGE_INDEX);
+            //转化成对象
+            Ads ads =  JsonUtil.parseJson(cache, Ads.class);
+            int size = ads.getAds().size();
 
+            if(null==ads){
+                return;
+            }
+
+            List<AdsDetail> adsDetails = ads.getAds();
+            if(null!=adsDetails && adsDetails.size()>0){
+                final AdsDetail detail =  adsDetails.get(index%size);
+                List<String> urls = detail.getRes_url();
+                if(urls!=null&&!TextUtils.isEmpty(urls.get(0))){
+                    //获取到url
+                    String url = urls.get(0);
+                    //计算出文件名
+                    String image_name =  Md5Helper.toMD5(url);
+
+                    File image = ImageUtil.getFileByName(image_name);
+                    if(image.exists()){
+                        Bitmap bitmap = ImageUtil.getImageBitMapByFile(image);
+                        iv_ads.setImageBitmap(bitmap);
+                        //指向下一张图片
+                        index++;
+                        SharePrenceUtil.saveInt(this,LAST_IMAGE_INDEX,index);
+
+
+
+                        iv_ads.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Action action =  detail.getAction_params();
+                                //如果h5的数据是空的或者没有广告页面,我们不跳转
+                                if(action!=null&&!TextUtils.isEmpty(action.getLink_url())){
+
+//                                    Intent intent = new Intent();
+//                                    intent.setClass(SplashActivity.this,WebViewActivity.class);
+//                                    intent.putExtra(WebViewActivity.ACTION_NAME,action);
+//                                    startActivity(intent);
+
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        else{
+            //没有缓存,显示不了图片,3秒后跳转到首页
+//            mHandler.postDelayed(NoPhotoGotoMain,3000);
+        }
     }
 
     public void getAds(){
