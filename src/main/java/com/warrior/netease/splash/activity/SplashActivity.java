@@ -14,6 +14,7 @@ import com.warrior.netease.service.DowloadImageService;
 import com.warrior.netease.splash.bean.Ads;
 import com.warrior.netease.util.Constant;
 import com.warrior.netease.util.JsonUtil;
+import com.warrior.netease.util.SharePrenceUtil;
 
 import java.io.IOException;
 
@@ -30,6 +31,11 @@ import okhttp3.Response;
 public class SplashActivity extends Activity {
 
     ImageView iv_ads;
+    //json 缓存
+    static final String JSON_CACHE = "ads_Json";
+    static final String JSON_CACHE_TIME_OUT = "ads_Json_time_out";
+    static final String JSON_CACHE_LAST_SUCCESS = "ads_Json_last";
+    static final String LAST_IMAGE_INDEX ="img_index";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +68,9 @@ public class SplashActivity extends Activity {
                 String date = response.body().string();
                 Ads ads = JsonUtil.parseJson(date,Ads.class);
                 if(null!=ads){
+                    SharePrenceUtil.saveString(SplashActivity.this,JSON_CACHE,date);
+                    SharePrenceUtil.saveInt(SplashActivity.this,JSON_CACHE_TIME_OUT,ads.getNext_req());
+                    SharePrenceUtil.saveLong(SplashActivity.this,JSON_CACHE_LAST_SUCCESS,System.currentTimeMillis());
                     Intent intent = new Intent();
                     intent.setClass(SplashActivity.this,DowloadImageService.class);
                     intent.putExtra(DowloadImageService.ADS_DATE ,ads);
