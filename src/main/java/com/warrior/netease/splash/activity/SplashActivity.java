@@ -46,21 +46,25 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         iv_ads = (ImageView)findViewById(R.id.ads);
+        getAds();
+
+    }
+
+    public void getAds(){
         String cache = SharePrenceUtil.getString(this,JSON_CACHE);
         if(TextUtils.isEmpty(cache)){
-            getAds();
+            httpRequest();
         }else{
             int time_Out = SharePrenceUtil.getInt(this,JSON_CACHE_TIME_OUT);
             long now = System.currentTimeMillis();
             long last = SharePrenceUtil.getLong(this,JSON_CACHE_LAST_SUCCESS);
             if((now-last)>time_Out*60*1000){
-                getAds();
+                httpRequest();
             }
         }
-
     }
 
-    public void getAds(){
+    public void httpRequest(){
         final OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(Constant.SPLASH_URL)
