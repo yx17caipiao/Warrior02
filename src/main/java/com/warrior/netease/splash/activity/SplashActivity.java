@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,7 +46,18 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         iv_ads = (ImageView)findViewById(R.id.ads);
-        getAds();
+        String cache = SharePrenceUtil.getString(this,JSON_CACHE);
+        if(TextUtils.isEmpty(cache)){
+            getAds();
+        }else{
+            int time_Out = SharePrenceUtil.getInt(this,JSON_CACHE_TIME_OUT);
+            long now = System.currentTimeMillis();
+            long last = SharePrenceUtil.getLong(this,JSON_CACHE_LAST_SUCCESS);
+            if((now-last)>time_Out*60*1000){
+                getAds();
+            }
+        }
+
     }
 
     public void getAds(){
