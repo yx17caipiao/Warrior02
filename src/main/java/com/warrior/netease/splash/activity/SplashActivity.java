@@ -101,10 +101,10 @@ public class SplashActivity extends Activity {
                                 //如果h5的数据是空的或者没有广告页面,我们不跳转
                                 if(action!=null&&!TextUtils.isEmpty(action.getLink_url())){
 
-//                                    Intent intent = new Intent();
-//                                    intent.setClass(SplashActivity.this,WebViewActivity.class);
-//                                    intent.putExtra(WebViewActivity.ACTION_NAME,action);
-//                                    startActivity(intent);
+                                    Intent intent = new Intent();
+                                    intent.setClass(SplashActivity.this,WebViewActivity.class);
+                                    intent.putExtra(WebViewActivity.ACTION_NAME,action);
+                                    startActivity(intent);
 
                                 }
                             }
