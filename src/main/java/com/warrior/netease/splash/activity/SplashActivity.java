@@ -11,11 +11,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.warrior.netease.MainActivity;
 import com.warrior.netease.R;
 import com.warrior.netease.service.DowloadImageService;
+import com.warrior.netease.splash.OnTimeClickListener;
 import com.warrior.netease.splash.bean.Action;
 import com.warrior.netease.splash.bean.Ads;
 import com.warrior.netease.splash.bean.AdsDetail;
@@ -42,12 +44,15 @@ import okhttp3.Response;
 public class SplashActivity extends Activity {
 
     ImageView iv_ads;
+    Button bt_tz;
     //json 缓存
     static final String JSON_CACHE = "ads_Json";
     static final String JSON_CACHE_TIME_OUT = "ads_Json_time_out";
     static final String JSON_CACHE_LAST_SUCCESS = "ads_Json_last";
     static final String LAST_IMAGE_INDEX ="img_index";
     Handler mHandler;
+
+    OnTimeClickListener mListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,11 +62,24 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         iv_ads = (ImageView)findViewById(R.id.ads);
+        bt_tz = (Button)findViewById(R.id.bt_tz);
         mHandler = new Handler();
         getAds();
         showImage();
 
+        bt_tz.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(SplashActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
+
+
+
 
     Runnable NoPhotoGotoMain = new Runnable() {
         @Override
@@ -130,7 +148,6 @@ public class SplashActivity extends Activity {
         else{
             //没有缓存,显示不了图片,3秒后跳转到首页
             mHandler.postDelayed(NoPhotoGotoMain,3000);
-            Log.i("it","nopic");
         }
     }
 
