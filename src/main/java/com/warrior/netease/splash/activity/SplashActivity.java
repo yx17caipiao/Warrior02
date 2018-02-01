@@ -70,15 +70,19 @@ public class SplashActivity extends Activity {
         bt_tz.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(SplashActivity.this,MainActivity.class);
-                startActivity(intent);
+                gotoMain();
             }
         });
 
     }
 
 
+    public void gotoMain(){
+        Intent intent = new Intent();
+        intent.setClass(SplashActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
 
     Runnable NoPhotoGotoMain = new Runnable() {
