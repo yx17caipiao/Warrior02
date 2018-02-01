@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.warrior.netease.MainActivity;
 import com.warrior.netease.R;
 import com.warrior.netease.service.DowloadImageService;
 import com.warrior.netease.splash.bean.Action;
@@ -45,6 +47,7 @@ public class SplashActivity extends Activity {
     static final String JSON_CACHE_TIME_OUT = "ads_Json_time_out";
     static final String JSON_CACHE_LAST_SUCCESS = "ads_Json_last";
     static final String LAST_IMAGE_INDEX ="img_index";
+    Handler mHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,10 +57,21 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         iv_ads = (ImageView)findViewById(R.id.ads);
+        mHandler = new Handler();
         getAds();
         showImage();
 
     }
+
+    Runnable NoPhotoGotoMain = new Runnable() {
+        @Override
+        public void run() {
+            Intent intent = new Intent();
+            intent.setClass(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+
+        }
+    };
 
 
     public void showImage(){
@@ -115,7 +129,8 @@ public class SplashActivity extends Activity {
         }
         else{
             //没有缓存,显示不了图片,3秒后跳转到首页
-//            mHandler.postDelayed(NoPhotoGotoMain,3000);
+            mHandler.postDelayed(NoPhotoGotoMain,3000);
+            Log.i("it","nopic");
         }
     }
 
