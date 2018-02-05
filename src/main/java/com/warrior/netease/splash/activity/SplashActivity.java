@@ -52,7 +52,7 @@ public class SplashActivity extends Activity {
     static final String LAST_IMAGE_INDEX ="img_index";
     Handler mHandler;
 
-    OnTimeClickListener mListener;
+//    OnTimeClickListener mListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +76,10 @@ public class SplashActivity extends Activity {
 
     }
 
+
+//    public void setListener(OnTimeClickListener listener){
+//        this.mListener = listener;
+//    }
 
     public void gotoMain(){
         Intent intent = new Intent();
