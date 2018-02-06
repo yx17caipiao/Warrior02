@@ -7,9 +7,9 @@
 
 
     <android.support.v4.app.FragmentTabHost
-        android:id="@+id/tab_host"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/tab_Host">
 
         <LinearLayout
             android:layout_width="match_parent"
