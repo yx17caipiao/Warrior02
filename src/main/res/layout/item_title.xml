@@ -19,5 +19,6 @@
         android:layout_below="@id/icon"
         android:layout_centerHorizontal="true"
         android:text="abc"
+        android:textColor="@color/tab_title_selector"
         />
 </RelativeLayout>
